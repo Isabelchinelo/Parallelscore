@@ -18,8 +18,13 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.Reporter;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
 
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
@@ -36,20 +41,20 @@ public class TestBase {
 	public static FileInputStream fis;
 	public static Logger log = Logger.getLogger("devpinoyLogger");
 	public static ExcelReader excel = new ExcelReader(
-			System.getProperty("user.dir") + "\\src\\test\\resources\\excel\\testdata.xlsx");
+			System.getProperty("user.dir") + "/src/test/resources/excel/testdata.xlsx");
 	public static WebDriverWait wait;
 	public ExtentReports rep = ExtentManager.getInstance();
 	public static ExtentTest test;
 	public static String browser;
 	
-	@BeforeSuite
+	@BeforeClass
 	public void setUp () {
 		
 		if (driver==null) {
 			
 			try {
-				fis = new FileInputStream (System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\Config.properties");
-				System.out.println("System Path :: " + System.getProperty("user.dir") + "\\src\\test\\resources\\excel\\testdata.xlsx");
+				fis = new FileInputStream (System.getProperty("user.dir") + "/src/test/resources/properties/Config.properties");
+				System.out.println("System Path :: " + System.getProperty("user.dir") + "/src/test/resources/excel/testdata.xlsx");
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -63,7 +68,7 @@ public class TestBase {
 			}
 			
 			try {
-				fis = new FileInputStream (System.getProperty("user.dir") + "\\src\\test\\resources\\properties\\OR.properties");
+				fis = new FileInputStream (System.getProperty("user.dir") + "/src/test/resources/properties/OR.properties");
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -94,17 +99,17 @@ public class TestBase {
 			
 			if(config.getProperty("browser").equals("firefox")) {
 				
-				System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "\\src\\test\\resources\\executables\\geckodriver.exe");
+				System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "/src/test/resources/executables/geckodriver.exe");
 				driver = new FirefoxDriver();
 				log.debug("Firefox launched !!!");
 			}else if (config.getProperty("browser").equals("chrome")) {
 				
-				System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "\\src\\test\\resources\\executables\\chromedriver.exe");
+				System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/src/test/resources/executables/chromedriver.exe");
 				driver = new ChromeDriver();
 				log.debug("Chrome Launched !!!");
 			}else if (config.getProperty("browser").equals("ie")) {
 				
-				System.setProperty("webdriver.ie.driver", System.getProperty("user.dir") + "\\src\\test\\resources\\executables\\iedriver.exe");
+				System.setProperty("webdriver.ie.driver", System.getProperty("user.dir") + "/src/test/resources/executables/iedriver.exe");
 				driver = new InternetExplorerDriver();
 			}
 		
@@ -128,8 +133,9 @@ public class TestBase {
 			driver.findElement(By.className(OR.getProperty(Locator))).click();
 		}else if (Locator.endsWith("_LINKTEXT")) {
 			driver.findElement(By.linkText(OR.getProperty(Locator))).click();
+		}else if (Locator.endsWith("_NAME")) {
+			driver.findElement(By.name(OR.getProperty(Locator))).click();
 		}
-			  
 		//test.log(LogStatus.INFO, "Clicking on : "+Locator);
 	}
 	
@@ -211,7 +217,7 @@ public class TestBase {
 	
 	
 	
-	@AfterSuite
+	@AfterClass
 	public void tearDown () {
 		
 		if(driver!=null) {

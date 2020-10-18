@@ -9,7 +9,7 @@ public class TestConfig {
 	public static String subject = "Extent Project Report";
 	
 	public static String messageBody ="TestMessage";
-	public static String attachmentPath="c:\\screenshot\\2017_10_3_14_49_9.jpg";
+	public static String attachmentPath="/Users/netowsolutions/Documents/Omniswift/NAUB-Automation/2017_10_3_14_49_9.jpg";
 	public static String attachmentName="error.jpg";
 	
 	
